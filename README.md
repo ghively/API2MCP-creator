@@ -9,6 +9,17 @@ A minimal, configurable Model Context Protocol (MCP) server you can use to adapt
 - Zero-boilerplate startup via STDIO (MCP)
 - TypeScript, strict mode, ESM
 
+## Why These Defaults
+
+An agent will call whatever tools you give it, as often as it likes. These defaults keep a new integration safe before you've learned the API's quirks:
+
+- **Retries on reads only.** A `GET` that hits 429, 502, 503 or 504 is retried up to 3 times with exponential backoff and jitter. Writes are never retried, because repeating a `POST` can create a duplicate record or charge twice.
+- **Respect the server's rate limit.** When the API sends `Retry-After`, the server waits that long instead of guessing, so the agent backs off the way the API asked.
+- **Writes are off by default.** `api_post`, `api_put`, `api_delete` and any generated write tools refuse until you set `ALLOW_DESTRUCTIVE=true`. You can explore a new API read-only first.
+- **Logs never hold secrets.** Each request is logged to STDERR as one JSON line, with any query parameter named like key, token, secret or password replaced by `REDACTED`.
+
+Each of these is covered by a test in `test/`.
+
 ## Quick Start
 
 1) Use this repo as your starting point:
