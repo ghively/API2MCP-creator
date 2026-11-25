@@ -10,7 +10,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
-    "test": "tsx --test test/server.smoke.test.ts",
+    "test": "tsx --test test/*.test.ts",
     "validate:endpoints": "tsx scripts/validate_endpoints.ts",
     "probe:get": "tsx scripts/probe_get.ts",
     "discover:openapi": "tsx scripts/discover_openapi.ts",
